@@ -39,11 +39,15 @@ spec:
         volumeMounts:
         - name: tmp
           mountPath: /tmp
-        - name: next-cache
-          mountPath: /app/.next/cache
+        - name: nginx-cache
+          mountPath: /var/cache/nginx
+        - name: nginx-run
+          mountPath: /var/run
       volumes:
       - name: tmp
         emptyDir: {}
-      - name: next-cache
+      - name: nginx-cache
+        emptyDir: {}
+      - name: nginx-run
         emptyDir: {}
 
