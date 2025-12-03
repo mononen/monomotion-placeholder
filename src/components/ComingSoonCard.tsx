@@ -1,5 +1,5 @@
 import { Box, Typography, Fade } from '@mui/material';
-import { keyframes } from '@mui/system';
+import { styled, keyframes } from '@mui/material/styles';
 
 const pulseGlow = keyframes`
   0%, 100% {
@@ -36,116 +36,130 @@ const fadeInUp = keyframes`
   }
 `;
 
+const CardContainer = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  zIndex: 10,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: theme.spacing(4),
+  minWidth: '90vw',
+  maxWidth: '90vw',
+  background: 'linear-gradient(135deg, rgba(20, 20, 35, 0.5) 0%, rgba(10, 10, 20, 0.6) 100%)',
+  backdropFilter: 'blur(12px)',
+  WebkitBackdropFilter: 'blur(12px)',
+  borderRadius: '24px',
+  border: '1px solid rgba(255, 107, 53, 0.2)',
+  animation: `${pulseGlow} 4s ease-in-out infinite`,
+  [theme.breakpoints.up('sm')]: {
+    padding: theme.spacing(6),
+    minWidth: '450px',
+  },
+  [theme.breakpoints.up('md')]: {
+    padding: theme.spacing(8),
+    minWidth: '520px',
+  },
+}));
+
+const BrandName = styled(Typography)(({ theme }) => ({
+  fontSize: '2rem',
+  background: 'linear-gradient(135deg, #ff6b35 0%, #ff8c5a 50%, #00d4ff 100%)',
+  backgroundSize: '200% auto',
+  backgroundClip: 'text',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  animation: `${shimmer} 4s linear infinite, ${fadeInUp} 0.8s ease-out`,
+  textAlign: 'center',
+  marginBottom: theme.spacing(3),
+  [theme.breakpoints.up('sm')]: {
+    fontSize: '2.5rem',
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: '3rem',
+  },
+}));
+
+const Divider = styled(Box)(({ theme }) => ({
+  width: '80px',
+  height: '2px',
+  background: 'linear-gradient(90deg, transparent, #ff6b35, transparent)',
+  marginBottom: theme.spacing(3),
+  animation: `${fadeInUp} 0.8s ease-out 0.2s both`,
+}));
+
+const ComingSoonText = styled(Typography)(({ theme }) => ({
+  fontSize: '1.5rem',
+  color: theme.palette.text.primary,
+  fontWeight: 600,
+  textAlign: 'center',
+  marginBottom: theme.spacing(2),
+  animation: `${fadeInUp} 0.8s ease-out 0.4s both`,
+  [theme.breakpoints.up('sm')]: {
+    fontSize: '1.75rem',
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: '2rem',
+  },
+}));
+
+const Tagline = styled(Typography)(({ theme }) => ({
+  fontSize: '0.95rem',
+  color: theme.palette.text.secondary,
+  textAlign: 'center',
+  maxWidth: '400px',
+  lineHeight: 1.7,
+  animation: `${fadeInUp} 0.8s ease-out 0.6s both`,
+  [theme.breakpoints.up('sm')]: {
+    fontSize: '1rem',
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: '1.1rem',
+  },
+}));
+
+const DotsContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: theme.spacing(1),
+  marginTop: theme.spacing(4),
+  animation: `${fadeInUp} 0.8s ease-out 0.8s both`,
+}));
+
+interface DotProps {
+  active?: boolean;
+}
+
+const Dot = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<DotProps>(({ active }) => ({
+  width: 8,
+  height: 8,
+  borderRadius: '50%',
+  backgroundColor: active ? '#ff6b35' : 'rgba(255, 107, 53, 0.3)',
+  transition: 'all 0.3s ease',
+}));
+
 export default function ComingSoonCard() {
   return (
     <Fade in timeout={1000}>
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 10,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: { xs: 4, sm: 6, md: 8 },
-          minWidth: { xs: '90vw', sm: '450px', md: '520px' },
-          maxWidth: '90vw',
-          background: 'linear-gradient(135deg, rgba(20, 20, 35, 0.85) 0%, rgba(10, 10, 20, 0.9) 100%)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          borderRadius: '24px',
-          border: '1px solid rgba(255, 107, 53, 0.2)',
-          animation: `${pulseGlow} 4s ease-in-out infinite`,
-        }}
-      >
-        {/* Company Name */}
-        <Typography
-          variant="h1"
-          sx={{
-            fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
-            background: 'linear-gradient(135deg, #ff6b35 0%, #ff8c5a 50%, #00d4ff 100%)',
-            backgroundSize: '200% auto',
-            backgroundClip: 'text',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            animation: `${shimmer} 4s linear infinite, ${fadeInUp} 0.8s ease-out`,
-            textAlign: 'center',
-            mb: 3,
-          }}
-        >
-          MONOMOTION
-        </Typography>
-
-        {/* Divider Line */}
-        <Box
-          sx={{
-            width: '80px',
-            height: '2px',
-            background: 'linear-gradient(90deg, transparent, #ff6b35, transparent)',
-            mb: 3,
-            animation: `${fadeInUp} 0.8s ease-out 0.2s both`,
-          }}
-        />
-
-        {/* Coming Soon Text */}
-        <Typography
-          variant="h2"
-          sx={{
-            fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' },
-            color: 'text.primary',
-            fontWeight: 600,
-            textAlign: 'center',
-            mb: 2,
-            animation: `${fadeInUp} 0.8s ease-out 0.4s both`,
-          }}
-        >
-          Coming Soon
-        </Typography>
-
-        {/* Tagline */}
-        <Typography
-          variant="body1"
-          sx={{
-            fontSize: { xs: '0.95rem', sm: '1rem', md: '1.1rem' },
-            color: 'text.secondary',
-            textAlign: 'center',
-            maxWidth: '400px',
-            lineHeight: 1.7,
-            animation: `${fadeInUp} 0.8s ease-out 0.6s both`,
-          }}
-        >
+      <CardContainer>
+        <BrandName variant="h1">MONOMOTION</BrandName>
+        <Divider />
+        <ComingSoonText variant="h2">Coming Soon</ComingSoonText>
+        <Tagline variant="body1">
           Premium power systems & batteries for Onewheel riders.
           <br />
           Check back soon.
-        </Typography>
-
-        {/* Accent Dots */}
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 1,
-            mt: 4,
-            animation: `${fadeInUp} 0.8s ease-out 0.8s both`,
-          }}
-        >
+        </Tagline>
+        <DotsContainer>
           {[0, 1, 2].map((i) => (
-            <Box
-              key={i}
-              sx={{
-                width: 8,
-                height: 8,
-                borderRadius: '50%',
-                backgroundColor: i === 1 ? 'primary.main' : 'rgba(255, 107, 53, 0.3)',
-                transition: 'all 0.3s ease',
-              }}
-            />
+            <Dot key={i} active={i === 1} />
           ))}
-        </Box>
-      </Box>
+        </DotsContainer>
+      </CardContainer>
     </Fade>
   );
 }
-

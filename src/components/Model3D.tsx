@@ -1,7 +1,7 @@
-import { useRef, Suspense } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF, OrbitControls, Environment, Center } from '@react-three/drei';
-import { Group, Mesh } from 'three';
+import { useRef, Suspense, useEffect, useMemo } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { useGLTF, Environment } from '@react-three/drei';
+import { Group, Mesh, Box3, Vector3 } from 'three';
 
 interface RotatingModelProps {
   url: string;
@@ -10,6 +10,41 @@ interface RotatingModelProps {
 function RotatingModel({ url }: RotatingModelProps) {
   const groupRef = useRef<Group>(null);
   const { scene } = useGLTF(url);
+  const { camera } = useThree();
+
+  // Clone the scene to avoid mutation issues
+  const clonedScene = useMemo(() => scene.clone(), [scene]);
+
+  useEffect(() => {
+    if (groupRef.current) {
+      // Calculate bounding box
+      const box = new Box3().setFromObject(groupRef.current);
+      const size = new Vector3();
+      const center = new Vector3();
+      box.getSize(size);
+      box.getCenter(center);
+      
+      // Get the largest dimension
+      const maxDim = Math.max(size.x, size.y, size.z);
+      
+      // Scale model to fit nicely in view (target size ~3 units)
+      const targetSize = 3;
+      const scale = maxDim > 0 ? targetSize / maxDim : 1;
+      groupRef.current.scale.setScalar(scale);
+      
+      // Center the model at origin
+      groupRef.current.position.set(
+        -center.x * scale,
+        -center.y * scale,
+        -center.z * scale
+      );
+      
+      // Position camera slightly above, looking down at the model
+      camera.position.set(0, 2.5, 5.5);
+      camera.lookAt(0, 0, 0);
+      camera.updateProjectionMatrix();
+    }
+  }, [clonedScene, camera]);
 
   useFrame((_, delta) => {
     if (groupRef.current) {
@@ -18,19 +53,17 @@ function RotatingModel({ url }: RotatingModelProps) {
   });
 
   // Apply a metallic material to the model
-  scene.traverse((child) => {
-    if (child instanceof Mesh) {
+  clonedScene.traverse((child) => {
+    if (child instanceof Mesh && child.material) {
       child.material.metalness = 0.8;
       child.material.roughness = 0.2;
     }
   });
 
   return (
-    <Center>
-      <group ref={groupRef}>
-        <primitive object={scene} scale={1} />
-      </group>
-    </Center>
+    <group ref={groupRef}>
+      <primitive object={clonedScene} />
+    </group>
   );
 }
 
@@ -65,7 +98,7 @@ interface Model3DProps {
 export default function Model3D({ modelUrl }: Model3DProps) {
   return (
     <Canvas
-      camera={{ position: [0, 0, 5], fov: 50 }}
+      camera={{ position: [0, 2.5, 5.5], fov: 35 }}
       style={{
         position: 'absolute',
         top: 0,
@@ -100,14 +133,6 @@ export default function Model3D({ modelUrl }: Model3DProps) {
         )}
         <Environment preset="city" />
       </Suspense>
-      
-      <OrbitControls
-        enableZoom={false}
-        enablePan={false}
-        enableRotate={false}
-        autoRotate={false}
-      />
     </Canvas>
   );
 }
-

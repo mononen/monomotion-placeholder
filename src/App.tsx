@@ -5,7 +5,7 @@ import ComingSoonCard from './components/ComingSoonCard';
 function App() {
   // Set to your model path when you have a GLB file
   // e.g., '/model.glb' if placed in public folder
-  const modelUrl = undefined; // Uses fallback geometry until you add your model
+  const modelUrl = '/model.glb'; // Uses fallback geometry until you add your model
 
   return (
     <Box
