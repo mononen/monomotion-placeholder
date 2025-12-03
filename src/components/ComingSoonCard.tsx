@@ -142,6 +142,33 @@ const Dot = styled(Box, {
   transition: 'all 0.3s ease',
 }));
 
+const PhotosLink = styled('a')(({ theme }) => ({
+  marginTop: theme.spacing(5),
+  padding: '12px 24px',
+  fontSize: '0.9rem',
+  color: 'rgba(255, 255, 255, 0.7)',
+  textDecoration: 'none',
+  borderRadius: '12px',
+  border: '1px solid rgba(0, 212, 255, 0.3)',
+  background: 'linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 168, 204, 0.04) 100%)',
+  transition: 'all 0.3s ease',
+  animation: `${fadeInUp} 0.8s ease-out 1s both`,
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '8px',
+  '&:hover': {
+    color: '#ffffff',
+    borderColor: 'rgba(0, 212, 255, 0.6)',
+    background: 'linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 168, 204, 0.08) 100%)',
+    boxShadow: '0 0 20px rgba(0, 212, 255, 0.2)',
+    transform: 'translateY(-2px)',
+  },
+  [theme.breakpoints.up('sm')]: {
+    fontSize: '0.95rem',
+    padding: '14px 28px',
+  },
+}));
+
 export default function ComingSoonCard() {
   return (
     <Fade in timeout={1000}>
@@ -159,6 +186,9 @@ export default function ComingSoonCard() {
             <Dot key={i} active={i === 1} />
           ))}
         </DotsContainer>
+        <PhotosLink href="https://photos.monomotion.org" target="_blank" rel="noopener noreferrer">
+          Looking for photos I've taken? →
+        </PhotosLink>
       </CardContainer>
     </Fade>
   );
