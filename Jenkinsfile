@@ -49,7 +49,7 @@ pipeline {
         stage("Development") {
             agent { label 'helm-deploy'}
             when {
-                branch 'dev'
+                branch 'master'
             }
             steps {
                 container(name: 'helm') {
