@@ -1,0 +1,10 @@
+ingress:
+  hosts:
+    - host: placeholder.adoah.dev
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: monomotion-placeholder-dev-tls
+      hosts:
+        - placeholder.adoah.dev
